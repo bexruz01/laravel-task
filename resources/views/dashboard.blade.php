@@ -47,7 +47,6 @@
                                         </div>
                                         <div>
                                             @if (is_null($application->file_url))
-                                            
                                             @else
                                                 <a href="{{ asset('storage/' . $application->file_url) }}"
                                                     target="_blank">
@@ -72,6 +71,13 @@
                     @else
                         {{ __("You're client!") }}
 
+                        @if (session()->has('error'))
+                            <div
+                                class="font-regular relative mb-4 block w-full rounded-lg bg-blue-500 p-4 text-base leading-5 text-white opacity-100 flex items-center justify-center">
+                                {{ session()->get('error') }}
+                            </div>
+                        @endif
+
                         <div class='flex items-center justify-center min-h-screen '>
                             <div class='w-full max-w-lg px-10 py-8 mx-auto bg-white rounded-lg shadow-xl'>
                                 <div class='max-w-md mx-auto space-y-6'>
@@ -95,7 +101,7 @@
                                             class="py-3 px-6 my-2 bg-emerald-500 text-white font-medium rounded hover:bg-indigo-500 cursor-pointer ease-in-out duration-300"
                                             value="Send">
                                     </form>
-
+                                    
                                 </div>
                             </div>
                         </div>
