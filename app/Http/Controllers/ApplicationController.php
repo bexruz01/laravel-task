@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreApplicationRequest;
 use App\Jobs\SendEmailJob;
 use App\Mail\ApplicationCreated;
 use App\Models\Application;
@@ -12,7 +13,14 @@ use Illuminate\Support\Facades\Mail;
 
 class ApplicationController extends Controller
 {
-    public function store(Request $request)
+
+  
+    public function index(){
+        return view("applications.index")->with([
+            "applications"=> auth()->user()->applications()->latest()->paginate(10),
+        ]);
+    }
+    public function store(StoreApplicationRequest $request)
     {
         if ($this->checkDate()) {
             return redirect()->back()->with("error", "you can create only 1 application a day !");
@@ -26,11 +34,7 @@ class ApplicationController extends Controller
                 'public'
             );
         }
-        $request->validate([
-            'subject' => 'required|max:255',
-            'message' => 'required',
-            'file' => 'file|mimes:png,jpg,pdf',
-        ]);
+
         $application = Application::create([
             "user_id" => auth()->user()->id,
             "subject" => $request->subject,
@@ -40,7 +44,7 @@ class ApplicationController extends Controller
 
         dispatch(new SendEmailJob($application));
 
-        return redirect()->route("dashboard")->with("success", "");
+        return redirect()->route("dashboard")->with("success", "Application successfully created and Email was sent");
     }
 
     public function checkDate()

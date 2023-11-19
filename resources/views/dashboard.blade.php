@@ -64,6 +64,22 @@
 
                                         </div>
                                     </div>
+                                    @if ($application->answer()->exists())
+                                        <div>
+                                            <hr>
+                                            <h3 class="text-xs font-bold mt-2 text-indigo-600">Answer:</h3>
+                                            <p>{{ $application->answer->body }}</p>
+                                        </div>
+                                    @else
+                                        <div class="flex justify-end">
+                                            <a href="{{ route('answers.create', ['application' => $application->id]) }}"
+                                                class="middle none center mr-4 rounded-lg bg-green-500 py-3 px-4 font-sans text-xs font-bold uppercase text-white shadow-md shadow-green-500/20 transition-all hover:shadow-lg hover:shadow-green-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+                                                data-ripple-light="true">
+                                                Answer
+                                            </a>
+                                        </div>
+                                    @endif
+
                                 </div>
                             </div>
                         @endforeach
@@ -75,6 +91,13 @@
                             <div
                                 class="font-regular relative mb-4 block w-full rounded-lg bg-blue-500 p-4 text-base leading-5 text-white opacity-100 flex items-center justify-center">
                                 {{ session()->get('error') }}
+                            </div>
+                        @endif
+
+                        @if (session()->has('success'))
+                            <div
+                                class="font-regular relative mb-4 block w-full rounded-lg bg-green-500 p-4 text-base leading-5 text-white opacity-100 flex items-center justify-center">
+                                {{ session()->get('success') }}
                             </div>
                         @endif
 
@@ -101,7 +124,7 @@
                                             class="py-3 px-6 my-2 bg-emerald-500 text-white font-medium rounded hover:bg-indigo-500 cursor-pointer ease-in-out duration-300"
                                             value="Send">
                                     </form>
-                                    
+
                                 </div>
                             </div>
                         </div>
